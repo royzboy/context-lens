@@ -38,3 +38,14 @@ export function observeWorkspace(): ContextState {
 		]
 	};
 }
+
+export function observeActiveEditor(
+	onChange: (state: ContextState) => void
+): vscode.Disposable {
+	console.log('Context Lens: registering active editor observer');
+
+	return vscode.window.onDidChangeActiveTextEditor(() => {
+		console.log('Context Lens: active editor changed');
+		onChange(observeWorkspace());
+	});
+}
