@@ -12,13 +12,31 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "context-lens.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
+  "commands": [
+    {
+      "command": "context-lens.helloWorld",
+      "title": "Hello World"
+    }
+  ],
+  "viewsContainers": {
+  "activitybar": [
+    {
+      "id": "contextLens",
+      "title": "Context Lens",
+      "icon": "resources/context-lens.svg"
+    }
+  ]
+},
+  "views": {
+  "contextLens": [
+    {
+      "type": "webview",
+      "id": "contextLens.panel",
+      "name": "Context"
+    }
+  ]
+}
+},
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
