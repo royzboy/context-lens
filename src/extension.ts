@@ -32,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const activeEditorSubscription = observeActiveEditor((state) => {
 	console.log('Context Lens state updated:', state.activeFile);
+	contextPanelProvider.updateState(state);
 });
 
 	context.subscriptions.push(activeEditorSubscription);

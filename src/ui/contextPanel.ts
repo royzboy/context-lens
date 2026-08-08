@@ -1,23 +1,39 @@
 import * as vscode from 'vscode';
 import { observeWorkspace } from '../workspace/workspaceObserver';
+import { ContextState } from '../context/types';
 
 export class ContextPanelProvider
 	implements vscode.WebviewViewProvider {
 
 	public static readonly viewType = 'contextLens.panel';
 
-	public resolveWebviewView(
-		webviewView: vscode.WebviewView
-	): void {
-		webviewView.webview.options = {
-			enableScripts: false
-		};
+	private view?: vscode.WebviewView;
 
-		webviewView.webview.html = this.getHtml();
+	private state?: ContextState;
+
+	public resolveWebviewView(
+	webviewView: vscode.WebviewView
+): void {
+	this.view = webviewView;
+
+	webviewView.webview.options = {
+		enableScripts: false
+	};
+
+	this.state = observeWorkspace();
+	webviewView.webview.html = this.getHtml();
+}
+
+	public updateState(state: ContextState): void {
+	this.state = state;
+
+	if (this.view) {
+		this.view.webview.html = this.getHtml();
 	}
+}
 
 	private getHtml(): string {
-		const state = observeWorkspace();
+	const state = this.state ?? observeWorkspace();
 
 		const activeFile = state.activeFile
 			? state.activeFile.split('/').pop()
