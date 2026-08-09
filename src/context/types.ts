@@ -1,26 +1,35 @@
 export type KnowledgeStatus =
-	| 'observed'
-	| 'inferred'
-	| 'declared'
-	| 'unknown';
+    | 'observed'
+    | 'inferred'
+    | 'declared'
+    | 'unknown';
+
 
 export type Confidence =
-	| 'high'
-	| 'medium'
-	| 'low';
+    | 'high'
+    | 'medium'
+    | 'low';
+
 
 export interface ContextFact {
-	id: string;
-	label: string;
-	value: string;
-	status: KnowledgeStatus;
-	source?: string;
-	confidence?: Confidence;
+    id: string;
+    label: string;
+    value: string;
+    status: KnowledgeStatus;
+    source?: string;
+    confidence?: Confidence;
 }
 
+
+export interface ProjectState {
+    openFiles: string[];
+}
+
+
 export interface ContextState {
-	workspaceName: string;
-	workspacePath: string;
-	activeFile?: string;
-	facts: ContextFact[];
+    workspaceName: string;
+    workspacePath: string;
+    activeFile?: string;
+    projectState: ProjectState;
+    facts: ContextFact[];
 }

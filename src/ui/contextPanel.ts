@@ -39,6 +39,14 @@ export class ContextPanelProvider
 			? state.activeFile.split('/').pop()
 			: 'None';
 
+		const languageFact = state.facts.find(
+		(fact) => fact.id === 'document-language'
+		);
+
+		const dirtyFact = state.facts.find(
+			(fact) => fact.id === 'document-dirty'
+		);
+
 		return `
 			<!DOCTYPE html>
 			<html lang="en">
@@ -95,6 +103,27 @@ export class ContextPanelProvider
 				<div class="section">
 					<div class="label">Current File</div>
 					<div class="value">${activeFile}</div>
+
+					<div class="status">
+						Language: ${languageFact?.value ?? 'Unknown'}
+					</div>
+
+					<div class="status">
+						Unsaved Changes: ${dirtyFact?.value ?? 'Unknown'}
+					</div>
+				</div>
+
+				<div class="section">
+					<div class="label">Open Files</div>
+					<div class="value">
+						${
+							state.projectState.openFiles.length > 0
+								? state.projectState.openFiles
+									.map(file => file.split('/').pop())
+									.join('<br>')
+								: 'None'
+						}
+					</div>
 				</div>
 
 				<div class="section">
@@ -106,6 +135,10 @@ export class ContextPanelProvider
 
 					<div class="status known">
 						✓ Active editor
+					</div>
+
+					<div class="status known">
+						✓ Open editors
 					</div>
 
 					<div class="status unknown">
