@@ -35,28 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 
 	const activeEditorSubscription = observeActiveEditor((state) => {
-	console.log('Context Lens state updated:', state.activeFile);
-	contextPanelProvider.updateState(state);
+    contextPanelProvider.updateState(state);
 });
 
 	context.subscriptions.push(activeEditorSubscription);
 
 	const documentChangeSubscription = observeDocumentChanges((state) => {
-	console.log('Context Lens state updated from document change:', state.activeFile);
 	contextPanelProvider.updateState(state);
 });
 
 context.subscriptions.push(documentChangeSubscription);
 
 const tabChangeSubscription = observeTabs((state) => {
-    console.log(
-        'Context Lens state updated from tab change:',
-        state.activeFile
-    );
-    console.log(
-        'Context Lens open files:',
-        state.projectState.openFiles
-    );
     contextPanelProvider.updateState(state);
 });
 

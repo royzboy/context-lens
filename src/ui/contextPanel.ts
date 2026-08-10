@@ -89,6 +89,25 @@ export class ContextPanelProvider
 					.unknown {
 						color: var(--vscode-descriptionForeground);
 					}
+
+					.healthy {
+						color: var(--vscode-testing-iconPassed);
+					}
+
+					.warning {
+						color: var(--vscode-editorWarning-foreground);
+					}
+
+					.problem {
+						color: var(--vscode-editorError-foreground);
+					}
+
+					.health-reason {
+						margin-left: 18px;
+						margin-top: 2px;
+						color: var(--vscode-descriptionForeground);
+						font-size: 11px;
+					}
 				</style>
 			</head>
 
@@ -159,10 +178,35 @@ export class ContextPanelProvider
 				</div>
 
 				<div class="section">
-					<div class="label">Project State</div>
-					<div class="value">
-						No project state yet.
+					<div class="label">Context Health</div>
+
+					<div class="status">
+						Overall:
+						<span class="${state.health.overallStatus}">
+							${state.health.overallStatus}
+						</span>
 					</div>
+
+					${
+						state.health.findings.length > 0
+							? state.health.findings.map(finding => `
+								<div class="status ${finding.status}">
+									${finding.status === 'healthy' ? '✓' :
+									finding.status === 'warning' ? '⚠' :
+									finding.status === 'problem' ? '✕' : '?'}
+									${finding.label}
+								</div>
+
+								<div class="health-reason">
+									${finding.reason}
+								</div>
+							`).join('')
+							: `
+								<div class="status unknown">
+									? No health findings available
+								</div>
+							`
+					}
 				</div>
 			</body>
 			</html>
