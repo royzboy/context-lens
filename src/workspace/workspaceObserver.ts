@@ -11,23 +11,20 @@ export function observeWorkspace(): ContextState {
 
 	const openFiles = vscode.window.tabGroups.all
 		.flatMap(group => group.tabs)
+		.filter(tab => tab.input instanceof vscode.TabInputText)
 		.map(tab => {
-			if (tab.input instanceof vscode.TabInputText) {
-				return tab.input.uri.fsPath;
-			}
+			const input = tab.input as vscode.TabInputText;
 
-			return undefined;
-		})
-		.filter((file): file is string => file !== undefined);
-
-	const openEditors = vscode.window.tabGroups.all
-	.flatMap(group => group.tabs)
-	.filter(tab => tab.input instanceof vscode.TabInputText)
-	.map(tab => {
-		const input = tab.input as vscode.TabInputText;
-		return vscode.workspace.asRelativePath(input.uri);
-	})
-	.join(', ') || 'None';
+			return {
+				path: input.uri.fsPath,
+				isActive: activeEditor?.document.uri.fsPath === input.uri.fsPath,
+				isDirty: vscode.workspace.textDocuments.some(
+					document =>
+						document.uri.fsPath === input.uri.fsPath &&
+						document.isDirty
+				)
+			};
+		});
 
 	if (!workspaceFolder) {
 		const state: ContextState = {
@@ -75,14 +72,6 @@ export function observeWorkspace(): ContextState {
 				value: document?.fileName ?? 'None',
 				status: 'observed',
 				source: 'VS Code Text Editor API',
-				confidence: 'high'
-			},
-			{
-				id: 'open-editors',
-				label: 'Open Editors',
-				value: openEditors,
-				status: 'observed',
-				source: 'VS Code Tab Groups API',
 				confidence: 'high'
 			},
 			{

@@ -36,8 +36,16 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Projects/context-lens-test/README.md',
-                    '/Users/roysong/Projects/context-lens-test/test2.md'
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/README.md',
+                        isActive: false,
+                        isDirty: false
+                    },
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/test2.md',
+                        isActive: false,
+                        isDirty: false
+                    }
                 ]
             },
             observedAt: Date.now()
@@ -86,7 +94,11 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Projects/context-lens-test/README.md',
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/README.md',
+                        isActive: false,
+                        isDirty: false
+                    }
                 ]
             },
             observedAt: Date.now()
@@ -129,7 +141,11 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Projects/context-lens-test/README.md'
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/README.md',
+                        isActive: false,
+                        isDirty: false
+                    }
                 ]
             },
             observedAt: Date.now()
@@ -164,7 +180,11 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Documents/random.md'
+                    {
+                        path: '/Users/roysong/Documents/random.md',
+                        isActive: false,
+                        isDirty: false
+                    },
                 ]
             },
             observedAt: Date.now()
@@ -193,8 +213,16 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Projects/context-lens-test/README.md',
-                    '/Users/roysong/Projects/context-lens-test/test2.md'
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/README.md',
+                        isActive: false,
+                        isDirty: false
+                    },
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/test2.md',
+                        isActive: false,
+                        isDirty: false
+                    }
                 ]
             },
             observedAt: Date.now()
@@ -226,8 +254,16 @@ suite('Context Health Test Suite', () => {
             ],
             projectState: {
                 openFiles: [
-                    '/Users/roysong/Projects/context-lens-test/README.md',
-                    '/Users/roysong/Documents/random.md'
+                    {
+                        path: '/Users/roysong/Projects/context-lens-test/README.md',
+                        isActive: false,
+                        isDirty: false
+                    },
+                    {
+                        path: '/Users/roysong/Documents/random.md',
+                        isActive: false,
+                        isDirty: false
+                    }
                 ]
             },
             observedAt: Date.now()
@@ -257,8 +293,6 @@ suite('Context Health Test Suite', () => {
         };
 
         const health = evaluateContextHealth(snapshot);
-
-        console.log('No-workspace health:', health);
 
         assert.strictEqual(
             health.overallStatus,

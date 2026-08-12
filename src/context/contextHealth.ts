@@ -1,10 +1,9 @@
 import {
     ContextHealth,
-    ContextState,
     HealthFinding,
     ContextSnapshot
 } from './types';
-
+import { aggregateFindingStatus } from './statusAggregation';
 
 export function evaluateContextHealth(
     snapshot: ContextSnapshot
@@ -34,7 +33,9 @@ export function evaluateContextHealth(
     const activeFileIsOpen =
         activeFilePath !== undefined &&
         activeFilePath !== 'None' &&
-        snapshot.projectState.openFiles.includes(activeFilePath);
+        snapshot.projectState.openFiles.some(
+            file => file.path === activeFilePath
+        );
         
     const activeFileIsInWorkspace =
         hasActiveFile &&
@@ -152,7 +153,7 @@ export function evaluateContextHealth(
     const openFilesOutsideWorkspace =
         workspacePath.length > 0 &&
         snapshot.projectState.openFiles.some(
-            file => !file.startsWith(`${workspacePath}/`)
+        file => !file.path.startsWith(`${workspacePath}/`)
         );
 
     if (workspacePath.length === 0) {
@@ -208,7 +209,7 @@ export function evaluateContextHealth(
     }
 
     return {
-        overallStatus,
+        overallStatus: aggregateFindingStatus(findings),
         findings
     };
 }

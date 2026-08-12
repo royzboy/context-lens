@@ -138,7 +138,7 @@ export class ContextPanelProvider
 						${
 							state.projectState.openFiles.length > 0
 								? state.projectState.openFiles
-									.map(file => file.split('/').pop())
+									.map(file => file.path.split('/').pop())
 									.join('<br>')
 								: 'None'
 						}

@@ -49,8 +49,14 @@ export interface ContextHealth {
     findings: HealthFinding[];
 }
 
+export interface OpenFile {
+    path: string;
+    isActive: boolean;
+    isDirty: boolean;
+}
+
 export interface ProjectState {
-    openFiles: string[];
+    openFiles: OpenFile[];
 }
 
 
@@ -61,4 +67,25 @@ export interface ContextState {
     projectState: ProjectState;
     facts: ContextFact[];
     health: ContextHealth;
+}
+
+export type HygieneStatus =
+    | 'healthy'
+    | 'warning'
+    | 'problem'
+    | 'unknown';
+
+
+export interface HygieneFinding {
+    id: string;
+    label: string;
+    status: HygieneStatus;
+    reason: string;
+    source?: string;
+}
+
+
+export interface ContextHygiene {
+    overallStatus: HygieneStatus;
+    findings: HygieneFinding[];
 }
