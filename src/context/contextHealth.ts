@@ -11,7 +11,9 @@ export function evaluateContextHealth(
     const findings: HealthFinding[] = [];
 
     const hasWorkspace = snapshot.facts.some(fact => fact.id === 'workspace');
-    const hasProjectState = snapshot.projectState.openFiles.length > 0;
+    const hasProjectState =
+        snapshot.projectState !== undefined &&
+        snapshot.projectState.openFiles.length > 0;
     const hasObservedFacts = snapshot.facts.length > 0;
 
     const dirtyFact = snapshot.facts.find(
@@ -33,12 +35,14 @@ export function evaluateContextHealth(
     const activeFileIsOpen =
         activeFilePath !== undefined &&
         activeFilePath !== 'None' &&
+        snapshot.projectState !== undefined &&
         snapshot.projectState.openFiles.some(
             file => file.path === activeFilePath
         );
         
     const activeFileIsInWorkspace =
         hasActiveFile &&
+        snapshot.workspacePath !== undefined &&
         snapshot.workspacePath !== '' &&
         activeFilePath.startsWith(snapshot.workspacePath);
 
@@ -151,17 +155,22 @@ export function evaluateContextHealth(
     const workspacePath = snapshot.workspacePath;
 
     const openFilesOutsideWorkspace =
+        workspacePath !== undefined &&
         workspacePath.length > 0 &&
+        snapshot.projectState !== undefined &&
         snapshot.projectState.openFiles.some(
-        file => !file.path.startsWith(`${workspacePath}/`)
+            file => !file.path.startsWith(`${workspacePath}/`)
         );
 
-    if (workspacePath.length === 0) {
+    if (
+        workspacePath === undefined ||
+        workspacePath.length === 0
+    ) {
         findings.push({
             id: 'open-file-coherence',
             label: 'Open File Coherence',
             status: 'unknown',
-            reason: 'No workspace is currently available to evaluate open file coherence.',
+            reason: 'No workspace information is currently available to evaluate open file coherence.',
             source: 'Context Lens Workspace Observer'
         });
     } else if (openFilesOutsideWorkspace) {

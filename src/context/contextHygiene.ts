@@ -10,7 +10,8 @@ export function evaluateContextHygiene(
 ): ContextHygiene {
     const findings: HygieneFinding[] = [];
 
-    const openFiles = snapshot.projectState.openFiles;
+    const openFiles =
+        snapshot.projectState?.openFiles ?? [];
 
     if (openFiles.length === 0) {
         findings.push({

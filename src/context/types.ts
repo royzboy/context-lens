@@ -21,10 +21,10 @@ export interface ContextFact {
 }
 
 export interface ContextSnapshot {
-    workspaceName: string;
-    workspacePath: string;
+    workspaceName?: string;
+    workspacePath?: string;
     facts: ContextFact[];
-    projectState: ProjectState;
+    projectState?: ProjectState;
     observedAt: number;
 }
 
