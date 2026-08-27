@@ -1,20 +1,10 @@
 import {
-    HealthFinding,
-    HealthStatus,
-    HygieneFinding,
-    HygieneStatus
+    ContextFinding,
+    FindingStatus
 } from './types';
 
-type StatusFinding =
-    | HealthFinding
-    | HygieneFinding;
-
-type FindingStatus =
-    | HealthStatus
-    | HygieneStatus;
-
 export function aggregateFindingStatus(
-    findings: StatusFinding[]
+    findings: ContextFinding[]
 ): FindingStatus {
     if (findings.some(finding => finding.status === 'problem')) {
         return 'problem';

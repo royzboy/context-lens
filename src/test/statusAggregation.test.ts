@@ -133,6 +133,34 @@ suite('Status Aggregation Test Suite', () => {
         );
     });
 
+    test('problem takes precedence regardless of finding order', () => {
+        const status = aggregateFindingStatus([
+            {
+                id: 'finding-1',
+                label: 'Finding 1',
+                status: 'problem',
+                reason: 'A serious issue was detected.'
+            },
+            {
+                id: 'finding-2',
+                label: 'Finding 2',
+                status: 'healthy',
+                reason: 'Everything is healthy.'
+            },
+            {
+                id: 'finding-3',
+                label: 'Finding 3',
+                status: 'warning',
+                reason: 'A potential issue was detected.'
+            }
+        ]);
+
+        assert.strictEqual(
+            status,
+            'problem'
+        );
+    });
+
     test('reports healthy when there are no findings', () => {
         const status = aggregateFindingStatus([]);
 

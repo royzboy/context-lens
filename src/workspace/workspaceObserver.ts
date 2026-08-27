@@ -3,7 +3,7 @@ import {
     ContextSnapshot,
     ContextState
 } from '../context/types';
-import { evaluateContextHealth } from '../context/contextHealth';
+import { evaluateContext } from '../context/contextEvaluation';
 
 export function observeWorkspace(): ContextState {
 	const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
@@ -41,9 +41,11 @@ export function observeWorkspace(): ContextState {
 			}
 		};
 
-		state.health = evaluateContextHealth(
-    		createContextSnapshot(state)
+		const evaluation = evaluateContext(
+			createContextSnapshot(state)
 		);
+
+		state.health = evaluation.health;
 
 		return state;
 	}
@@ -97,9 +99,11 @@ export function observeWorkspace(): ContextState {
 		}
 	};
 
-	state.health = evaluateContextHealth(
-    	createContextSnapshot(state)
+	const evaluation = evaluateContext(
+		createContextSnapshot(state)
 	);
+
+state.health = evaluation.health;
 
 	return state;
 }

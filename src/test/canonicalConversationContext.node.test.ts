@@ -10,6 +10,9 @@ import {
 import {
     evaluateContextHygiene
 } from '../context/contextHygiene';
+import {
+    evaluateContextEpistemicQuality
+} from '../context/contextEpistemic';
 
 suite('Canonical Conversation Context Test Suite', () => {
     test('represents a context source without a workspace or files', () => {
@@ -109,14 +112,19 @@ suite('Canonical Conversation Context Test Suite', () => {
             observedAt: Date.now()
         };
 
-        const hygiene = evaluateContextHygiene(snapshot);
+        const evaluation = evaluateContextEpistemicQuality(snapshot);
 
-        const epistemicFinding = hygiene.findings.find(
+        const epistemicFinding = evaluation.findings.find(
             finding => finding.id === 'uncertain-context'
         );
 
         assert.strictEqual(
             epistemicFinding?.status,
+            'healthy'
+        );
+
+        assert.strictEqual(
+            evaluation.overallStatus,
             'healthy'
         );
     });

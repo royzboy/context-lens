@@ -28,27 +28,6 @@ export interface ContextSnapshot {
     observedAt: number;
 }
 
-export type HealthStatus =
-    | 'healthy'
-    | 'warning'
-    | 'problem'
-    | 'unknown';
-
-
-export interface HealthFinding {
-    id: string;
-    label: string;
-    status: HealthStatus;
-    reason: string;
-    source?: string;
-}
-
-
-export interface ContextHealth {
-    overallStatus: HealthStatus;
-    findings: HealthFinding[];
-}
-
 export interface OpenFile {
     path: string;
     isActive: boolean;
@@ -69,23 +48,31 @@ export interface ContextState {
     health: ContextHealth;
 }
 
-export type HygieneStatus =
+export type FindingStatus =
     | 'healthy'
     | 'warning'
     | 'problem'
     | 'unknown';
 
-
-export interface HygieneFinding {
+export interface ContextFinding {
     id: string;
     label: string;
-    status: HygieneStatus;
+    status: FindingStatus;
     reason: string;
     source?: string;
 }
 
+export interface ContextHealth {
+    overallStatus: FindingStatus;
+    findings: ContextFinding[];
+}
 
 export interface ContextHygiene {
-    overallStatus: HygieneStatus;
-    findings: HygieneFinding[];
+    overallStatus: FindingStatus;
+    findings: ContextFinding[];
+}
+
+export interface ContextEpistemicQuality {
+    overallStatus: FindingStatus;
+    findings: ContextFinding[];
 }

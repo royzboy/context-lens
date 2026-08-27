@@ -1,6 +1,6 @@
 import {
     ContextHealth,
-    HealthFinding,
+    ContextFinding,
     ContextSnapshot
 } from './types';
 import { aggregateFindingStatus } from './statusAggregation';
@@ -8,7 +8,7 @@ import { aggregateFindingStatus } from './statusAggregation';
 export function evaluateContextHealth(
     snapshot: ContextSnapshot
 ): ContextHealth {
-    const findings: HealthFinding[] = [];
+    const findings: ContextFinding[] = [];
 
     const hasWorkspace = snapshot.facts.some(fact => fact.id === 'workspace');
     const hasProjectState =
@@ -189,32 +189,6 @@ export function evaluateContextHealth(
             reason: 'All observed open files are located within the current workspace.',
             source: 'Context Lens Workspace Observer'
         });
-    }
-
-    const hasProblem = findings.some(
-        finding => finding.status === 'problem'
-    );
-
-    const hasWarning = findings.some(
-        finding => finding.status === 'warning'
-    );
-
-    const hasHealthy = findings.some(
-        finding => finding.status === 'healthy'
-    );
-
-    let overallStatus: ContextHealth['overallStatus'];
-
-    if (hasProblem) {
-        overallStatus = 'problem';
-    } else if (!hasWorkspace) {
-        overallStatus = 'unknown';
-    } else if (hasWarning) {
-        overallStatus = 'warning';
-    } else if (hasHealthy) {
-        overallStatus = 'healthy';
-    } else {
-        overallStatus = 'unknown';
     }
 
     return {
